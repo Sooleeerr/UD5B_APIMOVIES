@@ -33,12 +33,20 @@ class VistaPeliculas : Fragment() {
         // Mostrar como cuadricula
         val mLayoutManager = GridLayoutManager(this.context, 2)
         rvPeliculas.layoutManager = mLayoutManager
-        adapter = PeliculasAdapter(data)
+        adapter = PeliculasAdapter(data){
+            val fragment = FragmentPelicula()
+            val bundle = Bundle()
+            bundle.putSerializable("miPelicula",it)
+            fragment.arguments = bundle
+            parentFragmentManager?.beginTransaction()
+                ?.replace(R.id.peliculasContainer, fragment)?.addToBackStack("MainActivity")?.commit()
+        }
         rvPeliculas.adapter = adapter
 
         // recupero el genero de la vista anterior
         val genero = arguments?.getSerializable("miGenero") as Genre
         getPeliculas(genero.id)
+
     }
 
     private fun getPeliculas(idGenero: Int){

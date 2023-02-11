@@ -1,10 +1,17 @@
 package com.utad.api_peliculas
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import com.squareup.picasso.Picasso
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +42,28 @@ class FragmentPelicula : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_pelicula, container, false)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val pelicula = arguments?.getSerializable("miPelicula") as PeliculasResponse.Pelicula
+        view?.findViewById<TextView>(R.id.tituloPelicula)?.setText(pelicula.title)
+        view?.findViewById<TextView>(R.id.descripcionPelicula)?.setText(pelicula.overview)
+
+        /*val dateString = pelicula.release_date
+        val formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd")
+        val date = LocalDate.parse(dateString, formatter).toString()*/
+
+        val dateString = pelicula.release_date
+        val yearLanzamiento= dateString.subSequence(0,4)
+
+        view?.findViewById<TextView>(R.id.yearPelicula)?.setText(yearLanzamiento)
+        view?.findViewById<TextView>(R.id.notaPelicula)?.setText(pelicula.vote_average.toString())
+        Picasso.get().load(ApiRest.URL_IMAGES + pelicula.poster_path).into(view?.findViewById<ImageView>(R.id.imagenPelicula))
+
+
     }
 
     companion object {

@@ -40,8 +40,11 @@ class MainActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putSerializable("miGenero",it)
             fragment.arguments = bundle
+
+
             supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.mainContainer, fragment)?.addToBackStack("MainActivity")?.commit()
+                ?.replace(R.id.mainContainer, fragment)?.addToBackStack("VistaPeliculas")?.commit()
+
         }
         rvGeneros.adapter = adapter
 
